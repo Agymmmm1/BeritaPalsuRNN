@@ -1,0 +1,7 @@
+beautifulsoup4==4.12.3
+Flask==3.0.3
+Flask_Cors==4.0.1
+joblib==1.2.0
+Requests==2.32.3
+tensorflow==2.15.0
+tensorflow_intel==2.15.0
