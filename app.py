@@ -31,10 +31,10 @@ def preprocess_text(text):
 def get_prediction(text):
     preprocessed_text = preprocess_text(text)
     prediction = model.predict(preprocessed_text)[0][0]
-    fake_prob = prediction * 100
-    real_prob = (1 - prediction) * 100
-    result_text = 'Hoax' if fake_prob > real_prob else 'Fakta'
-    return fake_prob, real_prob, result_text
+    prob_fake = prediction * 100
+    prob_true = (1 - prediction) * 100
+    result_text = 'Palsu' if prob_fake > prob_true else 'Fakta'
+    return prob_fake, prob_true, result_text
 
 # Function to extract text from URL (if needed)
 def extract_text_from_url(link):
@@ -52,7 +52,6 @@ def home():
 # Route to handle form submission and display results
 @app.route('/result', methods=['POST'])
 def result():
-    if request.method == 'POST':
         message = request.form.get('message')
         link = request.form.get('link')
         
@@ -62,12 +61,12 @@ def result():
         if not message:
             return jsonify({'error': 'No message or URL provided'}), 400
         
-        fake_prob, real_prob, result_text = get_prediction(message)
+        prob_fake, prob_true, result_text = get_prediction(message)
         return jsonify({
             'text': message,
             'prediction': result_text,
-            'fake_prob': fake_prob,
-            'real_prob': real_prob
+            'prob_fake': prob_fake,
+            'prob_true': prob_true
         })
 
 if __name__ == '__main__':
